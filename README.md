@@ -5,7 +5,7 @@ A simplified and type-safe wrapper around AWS DynamoDB client that makes working
 [![NPM version](https://img.shields.io/npm/v/dyndbclient.svg)](https://www.npmjs.com/package/dyndbclient)
 [![License](https://img.shields.io/npm/l/dyndbclient.svg)](https://github.com/subbusainath/dyndbclient/blob/main/LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-4.9.0+-blue.svg)](https://www.typescriptlang.org/)
-[![Node.js](https://img.shields.io/badge/Node.js-14.0.0+-green.svg)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18.0.0+-green.svg)](https://nodejs.org/)
 
 ## Features
 
