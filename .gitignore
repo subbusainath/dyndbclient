@@ -1,0 +1,134 @@
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Build outputs
+# dist/ - Keeping dist/ in the repo as it's included in the published package
+build/
+out/
+lib/
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+.nyc_output/
+junit.xml
+test-report.xml
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env*.local
+credentials.json
+.aws/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+*.sublime-workspace
+*.sublime-project
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+
+# Package files
+*.tgz
+*.gz
+package-lock.json
+
+# DynamoDB Local files
+.dynamodb/
+
+# TypeDoc generated docs
+docs/
+
+# npm pack output
+*.tgz
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# ESLint cache
+.eslintcache
+
+# Test files
+__tests__/fixtures/
+
+# Local development files
+local-config.json
+secrets.json
+.prettierrc.local
+.eslintrc.local
+
+# Docker files
+# Uncomment if you don't want to commit Docker configuration
+# docker-compose.yml
+# docker/
+
+# Utility scripts
+delete-items.js
+delete-table.js
+create-table.js
+
+# Local DynamoDB data
+dynamodb-local-data/
+
+# Debug files
+debug.log
+debug-log.txt
+
+# Code editors and IDEs
+.history/
+.vscode-test/
+.ionide/
+
+# OS specific
+.directory
+Icon?
+ehthumbs.db
+
+# Uncomment if you use TypeScript
+# *.js
+# *.js.map
+# *.d.ts

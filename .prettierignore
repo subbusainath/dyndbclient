@@ -1,0 +1,11 @@
+dist/
+node_modules/
+coverage/
+docs/
+*.js
+*.d.ts
+*.js.map
+
+# Package files
+package-lock.json
+yarn.lock 
