@@ -36,13 +36,35 @@ jobs:
       - name: Install dependencies
         run: npm install
       
+      - name: Fix package.json
+        run: npm pkg fix
+      
       - name: Run tests
         run: npm test
       
       - name: Build
         run: npm run build
       
+      - name: Verify NPM token
+        run: |
+          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+            echo "::error::NPM_TOKEN secret is not set! You need to add it in the repository secrets."
+            exit 1
+          fi
+          
+          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
+          npm whoami || {
+            echo "::error::NPM token is invalid or does not have publish permissions."
+            echo "Please check that your NPM_TOKEN:"
+            echo "1. Is valid and not expired"
+            echo "2. Has publish access to the package namespace"
+            echo "3. If this is a scoped package, make sure the token has access to the scope"
+            exit 1
+          }
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      
       - name: Publish to NPM
-        run: npm publish
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} 
