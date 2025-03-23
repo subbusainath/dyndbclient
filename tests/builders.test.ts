@@ -22,16 +22,22 @@ describe('Builder Security Tests', () => {
 
     it('should reject empty credentials', () => {
       expect(() =>
-        new ClientBuilder().withClientOptions({
-          credentials: {
-            accessKeyId: '',
-            secretAccessKey: '',
-          },
-        })
-      ).toThrow('Credentials cannot be empty');
+        new ClientBuilder()
+          .withRegion('us-east-1')
+          .withTableName('test-table')
+          .withEndpoint('https://dynamodb.amazonaws.com')
+          .withClientOptions({
+            credentials: {
+              accessKeyId: '',
+              secretAccessKey: '',
+            },
+          })
+          .build()
+      ).toThrow('If explicit credentials are provided for non-local endpoints, they cannot be empty');
     });
 
-    it('should require credentials for non-local endpoints', () => {
+    it('should accept non-local endpoints without explicit credentials', () => {
+      // This should NOT throw because the AWS SDK will use the default credential provider chain
       expect(() =>
         new ClientBuilder()
           .withRegion('us-east-1')
@@ -39,7 +45,7 @@ describe('Builder Security Tests', () => {
           .withEndpoint('https://dynamodb.amazonaws.com')
           .withClientOptions({})
           .build()
-      ).toThrow('Credentials are required for non-local endpoints');
+      ).not.toThrow();
     });
   });
 
