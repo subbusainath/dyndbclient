@@ -5,6 +5,12 @@ on:
     branches:
       - main
 
+# Add permissions for the GITHUB_TOKEN
+permissions:
+  contents: write
+  packages: read
+  pull-requests: read
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
