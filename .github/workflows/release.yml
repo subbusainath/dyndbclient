@@ -111,7 +111,7 @@ jobs:
             const version = '${{ steps.package-version.outputs.version }}';
             const releaseNotes = `${{ steps.release-notes.outputs.result }}`;
             
-            await github.rest.repos.createRelease({
+            const release = await github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: `v${version}`,
@@ -122,4 +122,39 @@ jobs:
               generate_release_notes: true
             });
             
-            console.log(`Created release v${version}`); 
+            console.log(`Created release v${version} with ID: ${release.data.id}`);
+            return release.data.id;
+            
+      - name: Verify Publish Workflow
+        if: steps.check-version.outputs.create_release == 'true'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            console.log("Checking for publish workflow runs...");
+            console.log("This release should trigger the publish.yml workflow with 'on.release.types: [created]'");
+            console.log("Verify in GitHub that workflow permissions are properly set in repository settings");
+            
+            // Wait a few seconds for the workflow to be triggered
+            await new Promise(resolve => setTimeout(resolve, 5000));
+            
+            // List workflows to verify
+            try {
+              const workflows = await github.rest.actions.listWorkflowRuns({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'publish.yml',
+                status: 'queued,in_progress'
+              });
+              
+              console.log(`Found ${workflows.data.total_count} active publish workflow runs`);
+              
+              if (workflows.data.total_count === 0) {
+                console.log("WARNING: No publish workflow appears to be running!");
+                console.log("Please check that publish.yml has correct trigger: on.release.types: [created]");
+              } else {
+                console.log("Publish workflow appears to be triggered correctly.");
+              }
+            } catch (error) {
+              console.log("Error checking workflows:", error.message);
+            } 

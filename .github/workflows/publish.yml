@@ -2,18 +2,29 @@ name: Publish Package to NPM
 
 on:
   release:
-    types: [created]
+    types: [created, published]
+  workflow_dispatch: # Allow manual triggering for testing
 
 # Add permissions needed for publishing
 permissions:
   contents: read
   packages: write
+  actions: read # Add permission to read workflow runs
 
 jobs:
   build-and-publish:
     runs-on: ubuntu-latest
     steps:
+      - name: Debug Event
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Event action: ${{ github.event.action }}"
+          echo "Release tag: ${{ github.event.release.tag_name }}"
+          echo "Release ID: ${{ github.event.release.id }}"
+      
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.release.tag_name }}
       
       - name: Setup Node.js
         uses: actions/setup-node@v3
