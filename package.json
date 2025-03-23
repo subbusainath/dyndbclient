@@ -24,7 +24,10 @@
     "format:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\" \"examples/**/*.ts\"",
     "docs": "typedoc --out docs src/index.ts",
     "start": "ts-node examples/index.ts",
-    "start:js": "node examples/javascript-example.js"
+    "start:js": "node examples/javascript-example.js",
+    "version:patch": "node scripts/bump-version.js patch",
+    "version:minor": "node scripts/bump-version.js minor",
+    "version:major": "node scripts/bump-version.js major"
   },
   "keywords": [
     "dynamodb",

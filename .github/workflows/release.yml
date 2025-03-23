@@ -1,0 +1,119 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Run tests
+        run: npm test
+      
+      - name: Build
+        run: npm run build
+  
+  create-release:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Get package version
+        id: package-version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+      - name: Get latest release version
+        id: latest-release
+        uses: actions/github-script@v6
+        continue-on-error: true
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            try {
+              const latestRelease = await github.rest.repos.getLatestRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+              return latestRelease.data.tag_name.replace('v', '');
+            } catch (error) {
+              return '0.0.0';
+            }
+            
+      - name: Check if new version
+        id: check-version
+        run: |
+          PACKAGE_VERSION=${{ steps.package-version.outputs.version }}
+          LATEST_VERSION=${{ steps.latest-release.outputs.result || '0.0.0' }}
+          
+          if [ "$PACKAGE_VERSION" != "$LATEST_VERSION" ]; then
+            echo "create_release=true" >> $GITHUB_OUTPUT
+          else
+            echo "create_release=false" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Generate release notes
+        if: steps.check-version.outputs.create_release == 'true'
+        id: release-notes
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { execSync } = require('child_process');
+            
+            // Get previous tag or use the beginning of history if no tags exist
+            let previousTag;
+            try {
+              previousTag = execSync('git describe --tags --abbrev=0 HEAD^').toString().trim();
+            } catch (error) {
+              // If no previous tag, use the first commit
+              previousTag = execSync('git rev-list --max-parents=0 HEAD').toString().trim();
+            }
+            
+            // Get commit messages since previous tag
+            const commitMessages = execSync(`git log ${previousTag}..HEAD --pretty=format:"* %s (%h)"`).toString().trim();
+            
+            return commitMessages || 'Bug fixes and improvements';
+      
+      - name: Create Release
+        if: steps.check-version.outputs.create_release == 'true'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const version = '${{ steps.package-version.outputs.version }}';
+            const releaseNotes = `${{ steps.release-notes.outputs.result }}`;
+            
+            await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: `v${version}`,
+              name: `v${version}`,
+              body: releaseNotes,
+              draft: false,
+              prerelease: false,
+              generate_release_notes: true
+            });
+            
+            console.log(`Created release v${version}`); 
