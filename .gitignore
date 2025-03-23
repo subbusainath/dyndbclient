@@ -71,7 +71,7 @@ temp/
 # Package files
 *.tgz
 *.gz
-package-lock.json
+# package-lock.json
 
 # DynamoDB Local files
 .dynamodb/
