@@ -33,7 +33,9 @@ describe('Builder Security Tests', () => {
             },
           })
           .build()
-      ).toThrow('If explicit credentials are provided for non-local endpoints, they cannot be empty');
+      ).toThrow(
+        'If explicit credentials are provided for non-local endpoints, they cannot be empty'
+      );
     });
 
     it('should accept non-local endpoints without explicit credentials', () => {
