@@ -108,7 +108,7 @@ jobs:
             try {
               previousTag = execSync('git describe --tags --abbrev=0 HEAD^').toString().trim();
             } catch (error) {
-              // If no previous tag, use the first commit
+              // If no previous tag, use the first commit.
               previousTag = execSync('git rev-list --max-parents=0 HEAD').toString().trim();
             }
             
