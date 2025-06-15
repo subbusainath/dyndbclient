@@ -1,7 +1,7 @@
 import { ClientBuilder } from '../src/core/client-builder';
 import { UpdateBuilder } from '../src/operations/update-builder';
 
-// Example user interface 
+// Example user interface
 interface User {
   userId: string;
   email: string;
