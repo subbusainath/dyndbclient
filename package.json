@@ -30,6 +30,9 @@
     "version:major": "node scripts/bump-version.js major"
   },
   "keywords": [
+    "AWS",
+    "AWS Dynamodb",
+    "aws dynamodb",
     "dynamodb",
     "client",
     "wrapper",
