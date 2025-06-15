@@ -1,7 +1,7 @@
 {
   "name": "dyndbclient",
   "version": "1.0.0",
-  "description": "A user-friendly DynamoDB client wrapper with extensive feature support & easy syntax (elite mode on)",
+  "description": "A user-friendly DynamoDB client wrapper with extensive feature support & easy syntax (elite  mode on)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
