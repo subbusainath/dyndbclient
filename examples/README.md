@@ -58,4 +58,5 @@ docker-compose down
 - The example uses a local DynamoDB instance running in Docker
 - Credentials are set to 'local' for development purposes
 - The table is created with minimal provisioned throughput (5 RCU/WCU)
-- Error handling is included for common scenarios 
+- Error handling is included for common scenarios
+  
