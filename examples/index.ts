@@ -11,7 +11,7 @@ interface User {
   createdAt: string;
 }
 
-// Initialize DyndbClient for local development using the builder pattern
+// Initialize DyndbClient for local development using the builder pattern for neat execution
 const db = new ClientBuilder()
   .withRegion('local')
   .withTableName('Users')
