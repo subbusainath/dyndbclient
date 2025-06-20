@@ -11,6 +11,7 @@
 import { DyndbClient } from './core/client';
 import { DynamoDBAttributeType, AttributePatterns } from './core/attributes/dynamodb-types';
 import { ScanBuilder } from './operations/scan-builder';
+import { ClientBuilder } from './core/client-builder';
 import {
   StreamRecord,
   StreamHandler,
@@ -38,6 +39,7 @@ import type {
  * Export the main client class and utility classes
  */
 export {
+  ClientBuilder,
   DyndbClient,
   DynamoDBAttributeType,
   AttributePatterns,
