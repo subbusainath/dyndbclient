@@ -38,6 +38,7 @@ import type {
  * Export the main client class and utility classes
  */
 export {
+  ClientBuilder,
   DyndbClient,
   DynamoDBAttributeType,
   AttributePatterns,
